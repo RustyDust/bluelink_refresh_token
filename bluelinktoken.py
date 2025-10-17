@@ -1,5 +1,15 @@
 #!/usr/bin/env uv run
-# main.py
+
+# bluelinktoken.py
+#
+# Unified script to retrieve the refresh token for a Hyundai/Kia
+# car.
+# 
+# Original authors:
+# Kia: fuatakgun (https://gist.githubusercontent.com/fuatakgun/fa4ef1e1d48b8dca2d22133d4d028dc9#gistfile1.txt)
+# Hyundai: Maaxion (https://gist.github.com/Maaxion/22a38ba8fb06937da18482ddf35171ac#file-gistfile1-txt)
+#
+
 import argparse
 import re
 from selenium import webdriver
