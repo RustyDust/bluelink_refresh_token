@@ -1,0 +1,10 @@
+[project]
+name = "bluelink-refresh-token"
+version = "0.1.0"
+description = "Retrieve Hyundai/Kia refresh token for use in HomeAssistant/evcc"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [ 
+    "selenium>=4.36.0",
+    "requests>=2.32.5",
+]
