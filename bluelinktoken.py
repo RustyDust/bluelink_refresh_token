@@ -19,6 +19,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import requests
 
+import time
 
 def main():
     """
@@ -47,7 +48,7 @@ def main():
         CLIENT_SECRET = "KUy49XxPzLpLuoK0xhBC77W6VXhmtQR9iQhmIFjjoY4IpxsV"
         REDIRECT_URL_FINAL = "https://prd.eu-ccapi.hyundai.com:8080/api/v1/user/oauth2/token"
         SUCCESS_ELEMENT_SELECTOR = "button.mail_check" 
-        LOGIN_URL = f"{BASE_URL}authorize?client_id=peuhyundaiidm-ctb&redirect_uri=https%3A%2F%2Fctbapi.hyundai-europe.com%2Fapi%2Fauth&nonce=&state=PL_&scope=openid+profile+email+phone&response_type=code&connector_client_id=peuhyundaiidm-ctb&connector_scope=&connector_session_key=&country=&captcha=1&ui_locales=en-US" 
+        LOGIN_URL = f"{BASE_URL}authorize?client_id=peuhyundaiidm-ctb&redirect_uri=https%3A%2F%2Fctbapi.hyundai-europe.com%2Fapi%2Fauth&nonce=&state=NL_&scope=openid+profile+email+phone&response_type=code&connector_client_id=peuhyundaiidm-ctb&connector_scope=&connector_session_key=&country=&captcha=1&ui_locales=en-US" 
 
     REDIRECT_URL = f"{BASE_URL}authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URL_FINAL}&lang=de&state=ccsp"
 
@@ -59,6 +60,7 @@ def main():
     # or specify the path to it.
     options = webdriver.ChromeOptions()
     options.add_argument("user-agent=Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19_CCS_APP_AOS")
+    options.add_argument("--auto-open-devtools-for-tabs")
     driver = webdriver.Chrome(options=options)
     driver.maximize_window()
 
@@ -75,10 +77,27 @@ def main():
         wait = WebDriverWait(driver, 300) # 300-second timeout
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, SUCCESS_ELEMENT_SELECTOR)))
         print("✅ Login successful! Element found.")
+        print(f"Redirecting to: {REDIRECT_URL}")
         driver.get(REDIRECT_URL)
         wait = WebDriverWait(driver, 15) # 15-second timeout
-        current_url = driver.current_url
-        print(current_url)
+        
+        current_url = ""
+
+        tries_left = 10
+        redir_found = False
+        
+        while (tries_left > 0):
+            current_url = driver.current_url
+            print(f" - [{11 - tries_left}] Waiting for redirect URLwith code")
+            if re.match(r'^https://.*:8080/api/v1/user/oauth2/redirect', current_url):
+                redir_found = True
+                break
+            tries_left -= 1
+            time.sleep(1)
+        
+        if redir_found == False:
+            print(f"\n❌ Failed to get redirected to correct URL, got {current_url} instead")
+            
         code = re.search(
                 r'code=([0-9a-fA-F-]{36}\.[0-9a-fA-F-]{36}\.[0-9a-fA-F-]{36})',
                 current_url
@@ -105,6 +124,7 @@ def main():
         print("❌ Timed out after 5 minutes. Login was not completed or the success element was not found.")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+        time.sleep(3600)
     finally:
         print("Cleaning up and closing the browser.")
         driver.quit()        
