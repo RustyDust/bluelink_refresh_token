@@ -75,7 +75,15 @@ def main():
 
     try:
         wait = WebDriverWait(driver, 300) # 300-second timeout
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, SUCCESS_ELEMENT_SELECTOR)))
+        if args.brand == "kia":
+            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, SUCCESS_ELEMENT_SELECTOR)))
+        else:
+            wait.until(EC.any_of(
+                EC.presence_of_element_located((By.CSS_SELECTOR, SUCCESS_ELEMENT_SELECTOR)),
+                EC.presence_of_element_located((By.CSS_SELECTOR, "button.ctb_button"))
+                )
+            )
+            
         print("✅ Login successful! Element found.")
         print(f"Redirecting to: {REDIRECT_URL}")
         driver.get(REDIRECT_URL)
