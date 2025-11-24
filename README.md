@@ -16,11 +16,22 @@ You need to have the following installed on your computer
 
 ## Preparations
 
-1) Clone this repository to your local hard drive and change into the newly created directory
-   ``` bash 
-   git clone https://github.com/RustyDust/bluelink_refresh_token.git
-   cd bluelink_refresh_token
-   ````
+1) Copy the script to your local hard drive
+   1) Using `git clone`
+      ``` bash 
+      git clone https://github.com/RustyDust/bluelink_refresh_token.git
+      cd bluelink_refresh_token
+      ````
+   1) Using the command line
+      1) **Linux/MacOS**
+         ``` bash 
+         wget -O bluelinktoken.py https://raw.githubusercontent.com/RustyDust/bluelink_refresh_token/refs/heads/main/bluelinktoken.py
+         ```
+      1) **Windows**  
+         Run in `powershell`:
+         ``` powershell
+         iwr -UseBasicParsing -OutFile bluelinktoken.py https://raw.githubusercontent.com/RustyDust/bluelink_refresh_token/refs/heads/main/bluelinktoken.py
+         ```
 1) Prepare the python runtime environment (you _do_ have Python3 installed, right?)
    1) **Linux/MacOS**
       ``` bash
@@ -30,9 +41,9 @@ You need to have the following installed on your computer
       ```
    1) **Windows**
       ``` powershell
-      py -m venv .venv
+      python -m venv .venv
       .\.venv\Scripts\Activate.ps1
-      python.exe -m pip install --upgrade pip
+      python -m pip install --upgrade pip
       pip install selenium requests webdriver-manager
       ````
 
@@ -43,21 +54,21 @@ You need to have the following installed on your computer
 ### **Kia**
 1) **Linux:**
    ``` bash
-   python -/bluelinktoken.py --brand kia
+   python3 -/bluelinktoken.py --brand kia
    ```
 1) **Windows:**
    ``` powershell
-   py .\bluelinktoken.py --brand kia
+   python .\bluelinktoken.py --brand kia
    ```
 
 ### **Hyundai**
 1) **Linux:**
    ``` bash
-   python -/bluelinktoken.py --brand hyundai
+   python3 -/bluelinktoken.py --brand hyundai
    ```
 1) **Windows:**
    ``` powershell
-   py .\bluelinktoken.py --brand hyundai
+   python .\bluelinktoken.py --brand hyundai
    ```
 
 The script will automatically open your browser (you did install Chrome, yes?)
