@@ -97,9 +97,14 @@ def main():
         while (tries_left > 0):
             current_url = driver.current_url
             print(f" - [{11 - tries_left}] Waiting for redirect URLwith code")
-            if re.match(r'^https://.*:8080/api/v1/user/oauth2/redirect', current_url):
-                redir_found = True
-                break
+            if args.brand == "kia":
+                if re.match(r'^https://.*:8080/api/v1/user/oauth2/redirect', current_url):
+                    redir_found = True
+                    break
+            elif args.brand == "hyundai":
+                if re.match(r'^https://.*:8080/api/v1/user/oauth2/token', current_url):
+                    redir_found = True
+                    break
             tries_left -= 1
             time.sleep(1)
         
