@@ -27,6 +27,7 @@ def main():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--brand", help="Brand of vehicle (Hyundai/Kia)", type=str.lower, required=True, choices=['hyundai','kia'])
+    parser.add_argument("--country", help="Country code (e.g., 'de' for Germany)", type=str.upper, default='DE')
     args = parser.parse_args()
 
     """
@@ -48,7 +49,8 @@ def main():
         CLIENT_SECRET = "KUy49XxPzLpLuoK0xhBC77W6VXhmtQR9iQhmIFjjoY4IpxsV"
         REDIRECT_URL_FINAL = "https://prd.eu-ccapi.hyundai.com:8080/api/v1/user/oauth2/token"
         SUCCESS_ELEMENT_SELECTOR = "button.mail_check" 
-        LOGIN_URL = f"{BASE_URL}authorize?client_id=peuhyundaiidm-ctb&redirect_uri=https%3A%2F%2Fctbapi.hyundai-europe.com%2Fapi%2Fauth&nonce=&state=NL_&scope=openid+profile+email+phone&response_type=code&connector_client_id=peuhyundaiidm-ctb&connector_scope=&connector_session_key=&country=&captcha=1&ui_locales=en-US" 
+        # LOGIN_URL = f"{BASE_URL}authorize?client_id=peuhyundaiidm-ctb&redirect_uri=https%3A%2F%2Fctbapi.hyundai-europe.com%2Fapi%2Fauth&nonce=&state=NL_&scope=openid+profile+email+phone&response_type=code&connector_client_id=peuhyundaiidm-ctb&connector_scope=&connector_session_key=&country=&captcha=1&ui_locales=en-US" 
+        LOGIN_URL = f"{BASE_URL}authorize?client_id=peuhyundaiidm-ctb&redirect_uri=https%3A%2F%2Fctbapi.hyundai-europe.com%2Fapi%2Fauth&nonce=&state={args.country}_&scope=openid+profile+email+phone&response_type=code&connector_client_id=peuhyundaiidm-ctb&connector_scope=&connector_session_key=&country=&captcha=1&ui_locales=en-US" 
 
     REDIRECT_URL = f"{BASE_URL}authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URL_FINAL}&lang=de&state=ccsp"
 
@@ -102,7 +104,7 @@ def main():
                     redir_found = True
                     break
             elif args.brand == "hyundai":
-                if re.match(r'^https://.*:8080/api/v1/user/oauth2/token', current_url):
+                if re.match(r'^https://.*:8080/api/v1/user/oauth2/connector', current_url):
                     redir_found = True
                     break
             tries_left -= 1
