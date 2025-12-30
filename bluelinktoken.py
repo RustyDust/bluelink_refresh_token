@@ -27,7 +27,7 @@ def main():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--brand", help="Brand of vehicle (Hyundai/Kia)", type=str.lower, required=True, choices=['hyundai','kia'])
-    parser.add_argument("--country", help="Country code (e.g., 'de' for Germany)", type=str.upper, default='DE')
+    parser.add_argument("--country", help="Country code (e.g., 'DE' for Germany)", type=str.upper, default='DE')
     args = parser.parse_args()
 
     """
